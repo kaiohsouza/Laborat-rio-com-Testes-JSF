@@ -1,17 +1,18 @@
 package br.com.kaio.argentum.modelo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CandlestickFactory {
 
-		public Candlestick geraCandlestickData(List<Negociacao> negociacoes, LocalDateTime data) {
+		public Candlestick geraCandleParaData(List<Negociacao> negociacoes, LocalDateTime data) {
 			
-			double abertura = negociacoes.get(0).getPreco();
-			double fechamento = negociacoes.get(negociacoes.size() - 1).getPreco();
+			double abertura = negociacoes.isEmpty() ? 0 : negociacoes.get(0).getPreco();
+			double fechamento = negociacoes.isEmpty() ? 0 : negociacoes.get(negociacoes.size() - 1).getPreco();
 			
-			double minimo = negociacoes.get(0).getPreco();
-			double maximo = negociacoes.get(0).getPreco();
+			double minimo = negociacoes.isEmpty() ? 0 : negociacoes.get(0).getPreco();
+			double maximo = negociacoes.isEmpty() ? 0 : negociacoes.get(0).getPreco();
 			
 			double volume = 0;
 			for (Negociacao negociacao : negociacoes) {
@@ -26,5 +27,30 @@ public class CandlestickFactory {
 			
 			return new Candlestick(abertura, fechamento, maximo, minimo, volume, data);
 		}
-	
+
+		public List<Candlestick> constroiCandles(List<Negociacao> negociacoes) {
+
+			List<Candlestick> candlesticks = new ArrayList<>();
+			List<Negociacao> negociacoesDoDia = new ArrayList();
+			
+			LocalDateTime dataAtual = negociacoes.get(0).getData();
+			
+			for (Negociacao negociacao : negociacoes) {
+				
+				if(negociacao.isMesmoDia(dataAtual)) {
+					negociacoesDoDia.add(negociacao);
+				}else {
+					Candlestick candle = geraCandleParaData(negociacoesDoDia, dataAtual);
+					candlesticks.add(candle);
+					
+					negociacoesDoDia = new ArrayList<>();
+					dataAtual = negociacao.getData();
+				}
+				
+			}
+			
+			Candlestick candle = geraCandleParaData(negociacoesDoDia, dataAtual); 
+			candlesticks.add(candle); // fechar o list pela ultima vez (ja que ele não entra no else)
+			return candlesticks;
+		}
 }

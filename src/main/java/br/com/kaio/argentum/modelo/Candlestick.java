@@ -4,15 +4,20 @@ import java.time.LocalDateTime;
 
 public class Candlestick {
 	
-	private final double maximo;
-	private final double minimo;
 	private final double abertura;
 	private final double fechamento;
+	private final double maximo;
+	private final double minimo;
 	private final double volume;
 	private final LocalDateTime data;
 	
-	public Candlestick(double maximo, double minimo, double abertura, double fechamento, double volume,
+	public Candlestick(double abertura, double fechamento, double maximo, double minimo, double volume,
 			LocalDateTime data) {
+		
+		if(maximo < minimo) {		
+			throw new IllegalArgumentException("O valor de maximo deve ser maior que o valor de minimo");
+		}
+		
 		this.maximo = maximo;
 		this.minimo = minimo;
 		this.abertura = abertura;
@@ -41,7 +46,7 @@ public class Candlestick {
 	}
 	
 	public boolean isAlta() {
-		return this.fechamento > this.abertura;
+		return this.fechamento >= this.abertura;
 	}
 	
 	public boolean isbaixa() {
