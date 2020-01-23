@@ -8,14 +8,14 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 
-public class CandlestickTest {
+public class CandleTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testMinimoMaiorQueMaximo() {
 		
 		CandleBuilder builder = new CandleBuilder();
 		
-		Candlestick candle = builder.comAbertura(10.0).comFechamento(30.0).comMaximo(15.0).
+		Candle candle = builder.comAbertura(10.0).comFechamento(30.0).comMaximo(15.0).
 				comMinimo(25.0).comVolume(100).comData(LocalDateTime.now()).geraCandle();
 	}
 

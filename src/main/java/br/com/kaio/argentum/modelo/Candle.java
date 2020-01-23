@@ -2,7 +2,7 @@ package br.com.kaio.argentum.modelo;
 
 import java.time.LocalDateTime;
 
-public class Candlestick {
+public class Candle {
 	
 	private final double abertura;
 	private final double fechamento;
@@ -11,7 +11,7 @@ public class Candlestick {
 	private final double volume;
 	private final LocalDateTime data;
 	
-	public Candlestick(double abertura, double fechamento, double maximo, double minimo, double volume,
+	public Candle(double abertura, double fechamento, double maximo, double minimo, double volume,
 			LocalDateTime data) {
 		
 		if(maximo < minimo) {		
